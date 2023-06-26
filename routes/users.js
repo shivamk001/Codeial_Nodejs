@@ -1,11 +1,27 @@
 const express = require('express')
 const router=express.Router()
+const passport=require('passport')
 
 const userController=require('../controllers/user_controller')
 
-router.get('/profile', userController.profile)
+
+//if user accessing profile page is not logged in, redirect to signin
+router.get('/profile', passport.checkAuthentication, userController.profile)
 
 router.get('/signup', userController.signup)
 router.get('/signin', userController.signin)
+router.get('/signout', userController.signout)
 router.post('/create', userController.create)
+router.post('/create-session', 
+(req, res, next)=>{
+    console.log(`Before: ${req.user}`)
+    next()
+},
+//to authenticate requests
+    passport.authenticate(
+        'local',
+        {failureRedirect: '/users/signin'}
+    ),
+    userController.createSession
+)
 module.exports=router

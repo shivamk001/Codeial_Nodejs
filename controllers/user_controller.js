@@ -1,16 +1,32 @@
 const User=require('../models/user')
 
 module.exports.profile=function(req, res){
-    return res.render('user_profile')
+    return res.render('user_profile', {title: 'Codial | My Profile'})
 }
 
 
 module.exports.signup=function(req, res){
+    console.log(`SIGNUP: ${req.isAuthenticated()}`)
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile')
+    }
     return res.render('user_signup', {title: 'Codial | Sign Up'})
 }
 
 module.exports.signin=function(req, res){
+    console.log(`SIGNIN: ${req.isAuthenticated()}`)
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile')
+    }
     return res.render('user_signin', {title: 'Codial | Sign In'})
+}
+
+module.exports.signout=function(req, res){
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.clearCookie();
+        res.redirect('/');
+      });
 }
 
 module.exports.create=function(req, res){
@@ -44,5 +60,7 @@ module.exports.create=function(req, res){
 }
 
 module.exports.createSession=function(req, res){
-    return res.render('user_signin', {title: 'Codial | Sign In'})
+    console.log(`Create session: Request authenticated: ${req.isAuthenticated()}`)
+    console.log(`Create session: Request authenticated: ${req.user}`)
+    return res.redirect('/')
 }
