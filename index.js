@@ -3,7 +3,7 @@ const app=express()
 const expressLayouts=require('express-ejs-layouts')
 const db=require('./config/mongoose')
 const cookieParser=require('cookie-parser');
-
+const sassMiddleware=require('node-sass-middleware')
 const port=8000
 
 //user for session cookie
@@ -15,6 +15,13 @@ app.use(express.urlencoded())
 app.use(cookieParser())
 
 //set up view engine
+app.use(sassMiddleware({
+    src:'./assets/scss',
+    dest: './assets/css',
+    debug: true,
+    outputStyle: 'extended',
+    prefix: '/css'
+}))
 app.use(express.static('./assets'))
 app.use(expressLayouts)
 app.set('view engine', 'ejs');
