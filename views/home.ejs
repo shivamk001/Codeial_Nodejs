@@ -1,2 +1,59 @@
 <title><%= title %></title>
 <h1>Codeial / <%= title %></h1>
+
+<section id="feed-posts">
+   
+    <% if(locals.user){ %>
+        <h4>Create Post</h4>
+        <form action="/posts/create-post" id="new-post-form" method="POST">
+            <textarea name="content" id="" cols="30" rows="3" placeholder="Type Here"></textarea>
+            <br>
+            <input type="submit" value="Post">
+        </form>
+        <div id="posts">
+            <h4>All Posts:</h4>
+            <ul style="list-style-type: none;">
+                <% locals.posts.forEach(post=>{ %>
+                
+                <li><%= post.content %> &nbsp &nbsp &nbsp<%= post.user.name%>
+                
+                    <!-- <div>
+                        <form action="/comments/create-comment/<%= post._id %>" id="new-post-form" method="POST">
+                            <textarea name="content" id="" cols="30" rows="1" placeholder="Type Here"></textarea>
+                            <input type="submit" value="Post">
+                        </form>
+                    </div> -->
+
+                    <div>
+                        <form action="/comments/create-comment" id="new-post-form" method="POST">
+                            <textarea name="content" id="" cols="30" rows="1" placeholder="Type Here" required></textarea>
+                            <input type="hidden" name="post" value="<%= post._id %>">
+                            <input type="submit" value="Add Comment">
+                        </form>
+
+                        <div class="post-comments-list">
+                            <ul id="post-comments-<%= post._id %>" style="list-style-type: none;">
+                                <% for(comment of post.comments){ %>
+                                    <li>
+                                        <p>
+                                            <%= comment.content%>
+                                            <br>
+                                            <small>
+                                                <%= comment.user.name %>
+                                            </small>
+                                        </p>
+                                    </li>
+                                <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                
+                </li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
+        
+
+        
+</section>
