@@ -22,9 +22,10 @@ module.exports.createPost=async function(req, res){
                 path: 'user'
             }
         })
+        req.flash('success',`Post created successfully`)
     }
     catch(err){
-        console.log(`Error while creating post: ${err}`)
+        req.flash('error',`Error while creating post: ${err}`)
     }
     
     return res.redirect('back')
@@ -40,11 +41,12 @@ module.exports.deletePost=async function(req, res){
             console.log('POST::', post)
             const comments=await Comment.deleteMany({post: req.params.id});
             console.log('Comments:', comments)
-            return res.redirect('back')
+            req.flash('success',`Post and associated comments deleted successfully`)
+            //return res.redirect('back')
         }
     }
     catch(err){
-        console.log(`Error in deleteing post: ${err}`)
+        req.flash('error',`Error in deleteing post: ${err}`)
     }
     return res.redirect('back')
 }

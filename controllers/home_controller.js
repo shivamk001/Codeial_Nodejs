@@ -20,7 +20,7 @@ module.exports.home=async function(req, res){
         console.log(`All Users;`, res.locals.allUsers)
     }
     catch(err){
-        console.log(`Err: ${err}`)
+        req.flash('error',err)
     }
     return res.render('home', {title:'Home'})
 }

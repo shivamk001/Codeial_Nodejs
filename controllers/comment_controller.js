@@ -19,13 +19,13 @@ module.exports.createComment=async function(req, res){
                 user: req.user._id,
                 post: req.body.post
             })
-            console.log(`Comment Created: ${comment}`)
+            req.flash('success', `Comment Created`)
             post.comments.push(comment);
             post.save();
         }
     }
     catch(err){
-        console.log(`Error: ${err}`)
+        req.flash('error',err)
     }
     return res.redirect('back')
 }
@@ -48,15 +48,16 @@ module.exports.deleteComment=async function(req, res){
         console.log('Post:', post)
 
         comment=await Comment.deleteOne({_id: commentid});
-        console.log('Comment Deleted:', comment)
+        
 
         post.comments.pull({_id: commentid})
         post.save();
-        
-        return res.redirect('back')
+
+        req.flash('success', `Comment Deleted`)
+        //return res.redirect('back')
     }
     catch(err){
-        console.log(`Error in deleteing comment: ${err}`)
+        req.flash('error',err)
     }
     return res.redirect('back')
 }

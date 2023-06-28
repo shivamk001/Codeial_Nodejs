@@ -4,6 +4,8 @@ const expressLayouts=require('express-ejs-layouts')
 const db=require('./config/mongoose')
 const cookieParser=require('cookie-parser');
 const sassMiddleware=require('node-sass-middleware')
+const flash=require('connect-flash')
+const customMware=require('./config/middleware.js')
 const port=8000
 
 //user for session cookie
@@ -55,6 +57,9 @@ app.use(passport.session())
 //set logged in user in response
 //the information which we get in user_profile page is set here
 app.use(passport.setAuthenticatedUser);
+
+app.use(flash());
+app.use(customMware.setFlash)
 //use express router
 app.use('/', require('./routes'))
 

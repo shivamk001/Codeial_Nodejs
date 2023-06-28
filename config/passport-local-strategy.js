@@ -8,21 +8,23 @@ passport.use(new LocalStrategy(
     // but we are using email and password as credentials
     //so in this object below we mention that usernameField is 'email'
     {
-    usernameField: 'email'
+    usernameField: 'email',
+    passReqToCallback: true
     },
     //this call-back is used to verify the username and password, done called on conclusion
-   async function(email, password, done){
+   async function(req, email, password, done){
         //find a user and establish identity
         console.log(`Called to authenticate: ${email}, ${password}`)
         try{
             const user=await User.findOne({email: email})
             if(!user || user.password!=password){
-                console.log('Invalid Username/password')
-                return done(none, false)
+                req.flash('error','Invalid Username/password')
+                return done(null, false)
             }
             return done(null, user);
         }
         catch(err){
+            req.flash('error',err)
             return done(err);
         }
     }

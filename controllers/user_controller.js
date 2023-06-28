@@ -12,6 +12,7 @@ module.exports.profile=async function(req, res){
     }
     catch(err){
         console.log(`Error in rendering profile page: ${err}`)
+        `Error while creating post: ${err}`
         return res.redirect('back')
     }
 }
@@ -36,44 +37,41 @@ module.exports.signin=function(req, res){
 module.exports.signout=function(req, res){
     req.logout(function(err) {
         if (err) { return next(err); }
-        res.clearCookie();
+        req.flash('success', 'Logged out successfully!')
         res.redirect('/');
       });
 }
 
-module.exports.create=function(req, res){
-    if(req.body.password != req.body.confirm_password){
-        return res.redirect('back');
-    }
+//create user
+module.exports.create=async function(req, res){
 
-    const user=User.findOne({email: req.body.email});
-    user
-    .then((data)=>{
-        console.log('DATA:',data)
-        console.log('Req Data:', req.body)
-        if(!data){        
-            User.create(req.body)
-            .then(u=>{
-                console.log(`Then u: ${u}`)
-                res.redirect('/users/signin')
-            })
-            .catch(err=>{
-                console.log('Error in creating user')
-                return res.redirect('back')
-            })
-        }else{
-            console.log('User already exists')
-            res.redirect('back')
+    try{
+        if(req.body.password != req.body.confirm_password){
+            req.flash('error', 'Passwords do not match. Re-enter password')
+            return res.redirect('back');
         }
-    })
-    .catch(err=>{
-        console.log('Error in finding user in signing up')
-    })
+        const user=await User.findOne({email: req.body.email});
+
+        if(!user){
+            await User.create(req.body)
+            req.flash('success', 'User created successfully!')
+            return res.redirect('/users/signin')
+        }
+        else{
+            req.flash('error', 'User already exists')
+        }
+    }
+    catch(err){
+        req.flash('error', 'Error in creating user')
+        req.flash('error', 'Error in finding user in signing up')
+    }
+    return res.redirect('back')
 }
 
 module.exports.createSession=function(req, res){
     console.log(`Create session: Request authenticated: ${req.isAuthenticated()}`)
     console.log(`Create session: Request authenticated: ${req.user}`)
+    req.flash('success', 'Logged in Successfully!')
     return res.redirect('/')
 }
 
@@ -88,10 +86,10 @@ module.exports.updateUserProfile=async function(req, res){
         user.email=req.body.email!=''? req.body.email: user.email
         user.password=(req.body.password!='' && req.body.password==req.body.confirm_password)?req.body.password: user.password
         user.save()
-
+        req.flash('success', 'User updation done Successfully!')
     }
     catch(err){
-        console.log(`Error in updating user: ${err}`)
+        req.flash('error', `Error in updating user: ${err}`)
     }
 
     return res.redirect('back')
