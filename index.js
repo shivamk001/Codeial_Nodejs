@@ -53,6 +53,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 //set logged in user in response
+//the information which we get in user_profile page is set here
 app.use(passport.setAuthenticatedUser);
 //use express router
 app.use('/', require('./routes'))

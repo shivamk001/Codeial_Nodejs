@@ -8,10 +8,12 @@
 <body>
     <header>
         <div class="header">
-                <p class="title">codeial</p>
+                <p class="title"><a href="/">codeial</a></p>
             <div class="sign">
                 <% if (locals.user){ %>
+                    <div class="signout"><a href="/users/profile/<%= locals.user.id %>"><%= locals.user.name %></a></div>
                     <div class="signout">
+                        
                         <a href="/users/signout">Sign Out</a>
                     </div>
                 <% }else{ %>

@@ -1,5 +1,5 @@
 const Post=require('../models/post')
-
+const Comment=require('../models/comment')
 
 module.exports.post=function(req, res){
     return res.render('user_profile')
@@ -27,5 +27,24 @@ module.exports.createPost=async function(req, res){
         console.log(`Error while creating post: ${err}`)
     }
     
+    return res.redirect('back')
+}
+
+module.exports.deletePost=async function(req, res){
+    console.log('In delete POST')
+    try{
+        const post=await Post.findById(req.params.id)
+
+        if(post.user==req.user.id){
+            const post=await Post.deleteOne({_id: req.params.id});
+            console.log('POST::', post)
+            const comments=await Comment.deleteMany({post: req.params.id});
+            console.log('Comments:', comments)
+            return res.redirect('back')
+        }
+    }
+    catch(err){
+        console.log(`Error in deleteing post: ${err}`)
+    }
     return res.redirect('back')
 }

@@ -6,7 +6,7 @@ const userController=require('../controllers/user_controller')
 
 
 //if user accessing profile page is not logged in, redirect to signin
-router.get('/profile', passport.checkAuthentication, userController.profile)
+router.get('/profile/:userid', passport.checkAuthentication, userController.profile)
 
 router.get('/signup', userController.signup)
 router.get('/signin', userController.signin)
@@ -24,4 +24,7 @@ router.post('/create-session',
     ),
     userController.createSession
 )
+
+router.post('/update-profile', passport.checkAuthentication, userController.updateUserProfile)
+
 module.exports=router

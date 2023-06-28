@@ -1,7 +1,19 @@
 const User=require('../models/user')
 
-module.exports.profile=function(req, res){
-    return res.render('user_profile', {title: 'Codial | My Profile'})
+module.exports.profile=async function(req, res){
+    try{
+        console.log('User Profile:', req.params.userid)
+        const profile_user=await User.findById(req.params.userid)
+        console.log('Profile User:', profile_user)
+        return res.render('user_profile', {
+            title: 'Codial | My Profile',   
+            profile_user: profile_user
+            })
+    }
+    catch(err){
+        console.log(`Error in rendering profile page: ${err}`)
+        return res.redirect('back')
+    }
 }
 
 
@@ -63,4 +75,24 @@ module.exports.createSession=function(req, res){
     console.log(`Create session: Request authenticated: ${req.isAuthenticated()}`)
     console.log(`Create session: Request authenticated: ${req.user}`)
     return res.redirect('/')
+}
+
+
+module.exports.updateUserProfile=async function(req, res){
+    console.log(`In EditUserProfile`)
+    try{
+        console.log('ReQ.user in editUserProfile:', req.user)
+        const user=await User.findById({_id: req.user.id})
+        console.log('User:', user)
+        user.name=req.body.name!=''? req.body.name: user.name
+        user.email=req.body.email!=''? req.body.email: user.email
+        user.password=(req.body.password!='' && req.body.password==req.body.confirm_password)?req.body.password: user.password
+        user.save()
+
+    }
+    catch(err){
+        console.log(`Error in updating user: ${err}`)
+    }
+
+    return res.redirect('back')
 }

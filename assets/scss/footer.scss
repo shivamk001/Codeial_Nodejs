@@ -1,7 +1,7 @@
 $myFont: Helvetica, sans-serif;
 
 .footer{
-    position: fixed;
+    position: relative;
     top: 92%;
     background-color: gray;
     height: 8%;
@@ -9,11 +9,28 @@ $myFont: Helvetica, sans-serif;
     display: flex;
     flex-direction: row;
     .title{
-        color: white;
-        font-family: $myFont;
-        margin-left: 10px;
-        font-size: 18px;
-        text-align: center;
+        a{
+            color: white;
+            font-family: $myFont;
+            margin-left: 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+        a:link {
+            text-decoration: none;
+      }
+      
+      a:visited {
+            text-decoration: none;
+      }
+      
+      a:hover {
+            text-decoration: none;
+      }
+      
+      a:active {
+            text-decoration: none;
+      }
     }
 
     .links{
