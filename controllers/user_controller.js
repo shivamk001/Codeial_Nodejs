@@ -1,4 +1,6 @@
 const User=require('../models/user')
+const fs=require('fs')
+const path=require('path')
 
 module.exports.profile=async function(req, res){
     try{
@@ -81,11 +83,36 @@ module.exports.updateUserProfile=async function(req, res){
     try{
         console.log('ReQ.user in editUserProfile:', req.user)
         const user=await User.findById({_id: req.user.id})
-        console.log('User:', user)
-        user.name=req.body.name!=''? req.body.name: user.name
-        user.email=req.body.email!=''? req.body.email: user.email
-        user.password=(req.body.password!='' && req.body.password==req.body.confirm_password)?req.body.password: user.password
-        user.save()
+        
+        User.uploadedAvatar(req, res, function(err){
+            if(err){
+                console.log(`Multer Error: ${err}`)
+                //req.flash('error', `Error in updating user: ${err}`)
+                //return res.redirect('back')
+            }
+
+            console.log('User:', user)
+            user.name=req.body.name!=''? req.body.name: user.name
+            user.email=req.body.email!=''? req.body.email: user.email
+            user.password=(req.body.password!='' && req.body.password==req.body.confirm_password)?req.body.password: user.password
+
+            if(req.file){
+
+                if(user.avatar){
+                    //if user.avatar file exists
+                    if(fs.existsSync(path.join(__dirname, '..', user.avatar))){
+                        //then only delete the file
+                        fs.unlinkSync(path.join(__dirname, '..', user.avatar))
+                    }
+                }
+                console.log('Req.file:', req.file)
+                user.avatar=User.avatarPath+'/'+req.file.filename
+            }
+            user.save()
+
+
+        })
+        
         req.flash('success', 'User updation done Successfully!')
     }
     catch(err){

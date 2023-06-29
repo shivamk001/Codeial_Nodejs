@@ -17,7 +17,7 @@ module.exports.home=async function(req, res){
         })
 
         res.locals.allUsers=await User.find({})
-        console.log(`All Users;`, res.locals.allUsers)
+        //console.log(`All Users;`, res.locals.allUsers)
     }
     catch(err){
         req.flash('error',err)

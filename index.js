@@ -25,6 +25,8 @@ app.use(sassMiddleware({
     prefix: '/css'
 }))
 app.use(express.static('./assets'))
+//the route /upload mapped to the uploads folder to access the files
+app.use('/uploads', express.static(__dirname+'/uploads'))
 app.use(expressLayouts)
 app.set('view engine', 'ejs');
 app.set('views', './views')
