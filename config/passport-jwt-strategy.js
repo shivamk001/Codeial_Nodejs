@@ -12,7 +12,7 @@ let options={
 
 passport.use(new JWTStrategy(options, async function(jwtPayload, done){
     try{
-        console.log(`Called to authenticate: ${jwtPayload}`)
+        //console.log(`Called to authenticate: ${jwtPayload}`)
         let user=await User.findById(jwtPayload._id)
 
         if(user){

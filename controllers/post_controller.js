@@ -40,7 +40,7 @@ module.exports.deletePost=async function(req, res){
             const post=await Post.deleteOne({_id: req.params.id});
             console.log('POST::', post)
             const comments=await Comment.deleteMany({post: req.params.id});
-            console.log('Comments:', comments)
+            //console.log('Comments:', comments)
             req.flash('success',`Post and associated comments deleted successfully`)
             //return res.redirect('back')
         }

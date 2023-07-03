@@ -14,7 +14,7 @@ passport.use(new LocalStrategy(
     //this call-back is used to verify the username and password, done called on conclusion
    async function(req, email, password, done){
         //find a user and establish identity
-        console.log(`Called to authenticate: ${email}, ${password}`)
+        //console.log(`Called to authenticate: ${email}, ${password}`)
         try{
             const user=await User.findOne({email: email})
             if(!user || user.password!=password){
@@ -39,9 +39,9 @@ passport.serializeUser(function(user, done){
 //deserialize the user from the key in the cookies, find the identity when requests are made
 passport.deserializeUser(async function(id, done){
     try{
-        console.log(`Deserialize user`)
+        //console.log(`Deserialize user`)
         const user=await User.findById({_id: id})
-        console.log(`Deserialize user: ${user}`)
+        //console.log(`Deserialize user: ${user}`)
         return done(null, user);
     }
     catch(err){

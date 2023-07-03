@@ -71,8 +71,8 @@ module.exports.create=async function(req, res){
 }
 
 module.exports.createSession=function(req, res){
-    console.log(`Create session: Request authenticated: ${req.isAuthenticated()}`)
-    console.log(`Create session: Request authenticated: ${req.user}`)
+   //console.log(`Create session: Request authenticated: ${req.isAuthenticated()}`)
+    //console.log(`Create session: Request authenticated: ${req.user}`)
     req.flash('success', 'Logged in Successfully!')
     return res.redirect('/')
 }
