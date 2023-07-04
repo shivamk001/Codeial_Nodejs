@@ -1,4 +1,5 @@
 const Comment=require('../models/comment')
+const Like = require('../models/likes')
 const Post=require('../models/post')
 const User=require('../models/user')
 
@@ -46,7 +47,8 @@ module.exports.deleteComment=async function(req, res){
             path: 'comments'
         })
         console.log('Post:', post)
-
+        //delete likes also
+        let likes=await Like.deleteMany({onModel: 'Comment', likeable: comment._id})
         comment=await Comment.deleteOne({_id: commentid});
         
 

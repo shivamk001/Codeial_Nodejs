@@ -3,8 +3,13 @@
     <% if(locals.user && (locals.user.id==post.user.id)){ %>
         <small><a href="/posts/delete-post/<%= post.id%>">X</a></small>
     <% } %>
-    <%= post.content %>&nbsp &nbsp<small>By: <%= post.user.name%></small>
-
+    <%= post.content %>&nbsp &nbsp<small>By: <%= post.user.name%></small> &nbsp 
+    
+    <% if(locals.user){ %>
+        <a href="/likes/toggleLike?id=<%= post.id %>&type=Post"><%= post.likes.length %>&nbsp; likes</i></a>
+    <% }else{ %>
+        <p><%= post.likes.length %> likes</p>
+    <% } %>
     <!-- <div>
         <form action="/comments/create-comment/<%= post._id %>" id="new-post-form" method="POST">
             <textarea name="content" id="" cols="30" rows="1" placeholder="Type Here"></textarea>

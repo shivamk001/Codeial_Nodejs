@@ -39,9 +39,9 @@ passport.serializeUser(function(user, done){
 //deserialize the user from the key in the cookies, find the identity when requests are made
 passport.deserializeUser(async function(id, done){
     try{
-        console.log(`Deserialize user`)
+        //console.log(`Deserialize user`)
         const user=await User.findById({_id: id})
-        console.log(`Deserialize user: ${user}`)
+        //console.log(`Deserialize user: ${user}`)
         return done(null, user);
     }
     catch(err){
