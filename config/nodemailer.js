@@ -3,13 +3,13 @@ const ejs=require('ejs')
 const path=require('path')
 
 let transporter=nodemailer.createTransport({
-    //service: 'gmail',
+    service: 'gmail',
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false,
     authentication:{
-        user: 'shivam.kesarwani001@gmail.com',
-        password: 'rwspcmehzoitxihl'
+        user: 'shivamnirvana019@gmail.com',
+        pass: 'azmgcyxxjhgwpvvo'
     }
 })
 
