@@ -1,0 +1,54 @@
+.chat_box {
+  height: 30%;
+  width: 20%;
+  position: fixed;
+  top: 65%;
+  left: 78%;
+  border: 1px solid black;
+  z-index: 2; }
+  .chat_box .messages {
+    position: absolute;
+    top: 0%;
+    height: 90%;
+    width: 100%;
+    background-color: whitesmoke;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column-reverse; }
+    .chat_box .messages .friend_msg {
+      position: relative;
+      left: 5%;
+      width: 45%;
+      background-color: aqua;
+      padding: 2px;
+      margin: 5px;
+      /* border-radius: 1.5rem; */ }
+      .chat_box .messages .friend_msg p {
+        margin: 0; }
+    .chat_box .messages .my_msg {
+      position: relative;
+      left: 55%;
+      width: 45%;
+      background-color: chartreuse;
+      padding: 2px;
+      margin: 5px;
+      /* border-radius: 1.5rem; */ }
+      .chat_box .messages .my_msg p {
+        margin: 0; }
+  .chat_box .send_message {
+    position: absolute;
+    top: 90%;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row; }
+    .chat_box .send_message .text-box {
+      width: 80%;
+      /* margin: 0;
+            padding: 0;
+            border: none; */ }
+    .chat_box .send_message .submit_button {
+      width: 20%;
+      margin: 0;
+      padding: 0;
+      border: none; }

@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="/css/chat.css">
+<% if(locals.user){ %>
+    <div class="chat_box">
+        <div id='messages' class="messages">
+            <div class="my_msg"><p>Last msg</p></div>
+            <div class="friend_msg"><p>Last msg</p></div>
+            <div class="friend_msg"><p>last msg Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi laoreet libero quis pretium faucibus. Pellentesque ultricies dolor ligula, efficitur convallis quam iaculis in. Donec nec tincidunt sem, a aliquam lectus. Fusce finibus libero fringilla, egestas justo non, feugiat ligula. Fusce mattis dictum ipsum, eget vestibulum ante pharetra vel. Aenean vitae turpis et ipsum venenatis tincidunt. Proin ullamcorper commodo libero vel mattis. Donec sit amet nulla quis eros placerat tristique.</p></div>
+            <div class="friend_msg"><p>Another message by the friend</p></div>
+            <div class="my_msg"><p>This is my other message</p></div>
+            <div class="my_msg"><p>Self message</p></div>
+            <div class="friend_msg"><p>1st msg Other message</p></div>
+
+
+
+            
+        </div>
+
+        <div id="send_message" class="send_message">
+            <input type="text" id='text-box' class="text-box" placeholder="Type message here">
+            <input type="submit" value="Send" id="submit-button" class="submit-button">
+        </div>
+    </div>
+<% } %>
