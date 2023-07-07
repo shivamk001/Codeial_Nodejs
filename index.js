@@ -6,8 +6,12 @@ const cookieParser=require('cookie-parser');
 const sassMiddleware=require('node-sass-middleware')
 const flash=require('connect-flash')
 const customMware=require('./config/middleware.js')
-const port=8000
+const env=require('./config/environment')
+const path=require('path')
+const logger=require('morgan')
+const port=env.port
 
+const app=require('./config/view-helpers')
 //user for session cookie
 const session=require('express-session')
 const passport=require('passport')
@@ -18,15 +22,20 @@ const MongoStore=require('connect-mongo');
 app.use(express.urlencoded())
 app.use(cookieParser())
 
+//set up logger
+app.use(logger(env.morgan.mode, env.morgan.options))
+
 //set up view engine
-app.use(sassMiddleware({
-    src:'./assets/scss',
-    dest: './assets/css',
-    debug: false,
-    outputStyle: 'extended',
-    prefix: '/css'
-}))
-app.use(express.static('./assets'))
+if(env.name=='development'){
+    app.use(sassMiddleware({
+        src: path.join(__dirname, env.asset_path, 'scss'),
+        dest: path.join(__dirname, env.asset_path, 'css'),
+        debug: false,
+        outputStyle: 'extended',
+        prefix: '/css'
+    }))
+}
+app.use(express.static(env.asset_path))
 //the route /upload mapped to the uploads folder to access the files
 app.use('/uploads', express.static(__dirname+'/uploads'))
 app.use(expressLayouts)
@@ -38,7 +47,7 @@ app.set('layout extractScripts', true);
 app.use(session({
     name: 'codeial',
     // TODO change the secret before deployment in production mode
-    secret: 'blahsomething',
+    secret: env.session_cookie_key,
     saveUninitialized: false,
     resave: false,
     cookie: {
