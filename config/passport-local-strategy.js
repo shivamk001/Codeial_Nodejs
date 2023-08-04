@@ -1,4 +1,5 @@
 const passport=require('passport');
+const colors=require('colors')
 const User=require('../models/user');
 const LocalStrategy=require('passport-local').Strategy;
 
@@ -32,14 +33,14 @@ passport.use(new LocalStrategy(
 
 //serialize the user to decide which key is to be kept in the cookies
 passport.serializeUser(function(user, done){
-    //console.log(`Serialize User: ${user.id}`)
+    console.log(colors.bgBlue(`Serialize User: ${user.id}`))
     done(null, user.id);
 })
 
 //deserialize the user from the key in the cookies, find the identity when requests are made
 passport.deserializeUser(async function(id, done){
     try{
-        console.log(`Deserialize user`)
+        //console.log(`Deserialize user`)
         const user=await User.findById({_id: id})
         console.log(`Deserialize user: ${user}`)
         return done(null, user);
@@ -63,6 +64,7 @@ passport.checkAuthentication=function(req, res, next){
 passport.setAuthenticatedUser=function(req, res, next){
     if(req.isAuthenticated()){
         //req.user contains current signed in user from session cookie and we send this to locals for views
+        console.log('SET AUTHENTICATED', req.user.email, req.url)
         res.locals.user=req.user;
     }
     next();

@@ -6,14 +6,15 @@ const cookieParser=require('cookie-parser');
 const sassMiddleware=require('node-sass-middleware')
 const flash=require('connect-flash')
 const customMware=require('./config/middleware.js')
+const colors=require('colors')
 const port=8000
 
 //user for session cookie
 const session=require('express-session')
 const passport=require('passport')
-const passportLocal=require('./config/passport-local-strategy')
-const passportJwt=require('./config/passport-jwt-strategy')
-const passportGoogle=require('./config/passport-google-oauth2-strategy')
+require('./config/passport-local-strategy')
+require('./config/passport-jwt-strategy')
+require('./config/passport-google-oauth2-strategy')
 const MongoStore=require('connect-mongo');
 app.use(express.urlencoded())
 app.use(cookieParser())
@@ -35,6 +36,10 @@ app.set('views', './views')
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 
+app.use((req,res,next)=>{console.log(colors.green.bgMagenta('INDEXJS SESSION COOKIE: %s'), req.session); next()})
+app.use((req,res,next)=>{console.log(colors.green.bgGreen('INDEXJS SESSION PASSPORT: %s'), req.session); next()})
+app.use((req,res,next)=>{console.log(colors.green.bgWhite('INDEXJS SESSION FLASH: %s'), req.session); next()})
+
 app.use(session({
     name: 'codeial',
     // TODO change the secret before deployment in production mode
@@ -55,9 +60,16 @@ app.use(session({
         }
     )
 }));
+app.use((req,res,next)=>{console.log(colors.green.bgRed('INDEXJS URL: %s'), req.url); next()})
+app.use((req,res,next)=>{console.log(colors.green.bgYellow('INDEXJS USER: %s'), req.user); next()})
+app.use((req,res,next)=>{console.log(colors.green.bgMagenta('INDEXJS COOKIE: %s'), req.session.cookie); next()})
+app.use((req,res,next)=>{console.log(colors.green.bgGreen('INDEXJS PASSPORT: %s'), req.session.passport); next()})
+app.use((req,res,next)=>{console.log(colors.green.bgWhite('INDEXJS FLASH: %s'), req.session.flash); next()})
+console.log(colors.bgCyan('BERFORE PASSPORT INITIALIZE'))
 app.use(passport.initialize())
+console.log(colors.bgRed('BERFORE PASSPORT SESSION'))
 app.use(passport.session())
-
+app.use((req,res,next)=>{console.log(colors.green.bgCyan('INDEXJS USER: %s'), req.user); next()})
 //set logged in user in response
 //the information which we get in user_profile page is set here
 app.use(passport.setAuthenticatedUser);

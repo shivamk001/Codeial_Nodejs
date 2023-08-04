@@ -1,7 +1,7 @@
 const User=require('../models/user')
 const fs=require('fs')
 const path=require('path')
-
+const colors=require('colors')
 module.exports.profile=async function(req, res){
     try{
         console.log('User Profile:', req.params.userid)
@@ -74,6 +74,8 @@ module.exports.createSession=function(req, res){
     console.log(`Create session: Request authenticated: ${req.isAuthenticated()}`)
     console.log(`Create session: Request authenticated: ${req.user}`)
     req.flash('success', 'Logged in Successfully!')
+    console.log(colors.green.bgBlue('CREATESESSION PASSPORT: %s'), req.session.passport);
+    console.log(colors.green.bgBlue('CREATESESSION USER: %s'), req.user);
     return res.redirect('/')
 }
 
