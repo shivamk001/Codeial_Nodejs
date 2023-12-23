@@ -1,20 +1,25 @@
 const express=require('express')
-const app=express()
-const expressLayouts=require('express-ejs-layouts')
-const db=require('./config/mongoose')
 const cookieParser=require('cookie-parser');
 const sassMiddleware=require('node-sass-middleware')
 const flash=require('connect-flash')
-const customMware=require('./config/middleware.js')
-const port=8000
-
-//user for session cookie
+const expressLayouts=require('express-ejs-layouts')
 const session=require('express-session')
 const passport=require('passport')
+require('dotenv').config()
+
+
+const db=require('./config/mongoose')
+const customMware=require('./config/middleware.js')
+
+//user for session cookie
 const passportLocal=require('./config/passport-local-strategy')
 const passportJwt=require('./config/passport-jwt-strategy')
 const passportGoogle=require('./config/passport-google-oauth2-strategy')
 const MongoStore=require('connect-mongo');
+
+
+
+const app=express()
 app.use(express.urlencoded())
 app.use(cookieParser())
 
@@ -38,7 +43,7 @@ app.set('layout extractScripts', true);
 app.use(session({
     name: 'codeial',
     // TODO change the secret before deployment in production mode
-    secret: 'blahsomething',
+    secret: process.env.SECRET,
     saveUninitialized: false,
     resave: false,
     cookie: {
@@ -46,7 +51,7 @@ app.use(session({
     },
     store: new MongoStore(
         {
-            mongoUrl: 'mongodb://127.0.0.1/codial_development',
+            mongoUrl: process.env.MONGODBURL,
             autoRemove: 'disabled'
         
         },
@@ -67,6 +72,7 @@ app.use(customMware.setFlash)
 //use express router
 app.use('/', require('./routes'))
 
+const port=process.env.PORT||8000
 app.listen(port, (err)=>{
     if(err){
         console.log(`Error: ${err}`)

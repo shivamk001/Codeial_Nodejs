@@ -1,6 +1,6 @@
 const mongoose=require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1/codial_development');
+mongoose.connect(process.env.MONGODBURL);
 
 const db=mongoose.connection
 
