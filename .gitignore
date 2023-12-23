@@ -4,6 +4,8 @@ client_secret.json
 
 .env
 
-assets/css
+/assets/css/
+
+*.css
 
 uploads/
